@@ -11,11 +11,13 @@ using namespace std;
 
 // ver0 : construct my_queue, BFS, handling input
 // ver0-1 : spilt function to different file 
+// ver0-2 : add dirty, change way to store floor data, revise BFS
 
 
 // map for debug
-extern char map[1005][1005], visit[1005][1005];
-extern int dis_to[1005][1005];
+char Map[1005][1005], visit[1005][1005];
+int dis_to[1005][1005];
+int dirty;
 
 
 int main() {
@@ -23,33 +25,40 @@ int main() {
     
     int dis, m, n;
     ifstream floor;
-
     #ifdef debug
         cin >> m >> n >> dis;
         for(int i = 0, r = 0; i < m; ++i) {
+            char ch;
             for(int j = 0; j < n; ++j) {
-                cin >> map[i][j];
-                if(map[i][j] != '1' && map[i][j] != '0' && map[i][j] != 'R') {
-                    cout << "invalid test case: floor data unexpected " << map[i][j] << endl;
+                cin >> ch;
+                if(ch != '1' && ch != '0' && ch != 'R') {
+                    cout << "invalid test case: floor data unexpected " << Map[i][j] << endl;
                     return 1;
                 }
                 if(r == 2) {
                     cout << "invalid test case: there is only one start point\n";
                     return -1;
                 }
-                if(map[i][j] == 'R')
+                if(ch == '1') {
+                    Map[i][j] = '9';
+                }
+                else{
+                    Map[i][j] = ch;
+                }
+                if(ch == 'R'){
                     r += 1;
+                }
             }
-        }
-        for(int i = 0; i < m; ++i) {
-            for(int j = 0; j < n; ++j) {
-                cout << map[i][j];
-            }
-            cout << endl;
         }
         if(BFS(dis / 2, m, n) < 0) {
             cout << "invalid test case: not all point reachable\n";
             return -1;
+        }
+         for(int i = 0; i < m; ++i) {
+            for(int j = 0; j < n; ++j) {
+                cout << Map[i][j];
+            }
+            cout << endl;
         }
         for(int i = 0; i < m; ++i) {
             for(int j = 0; j < n; ++j) {
@@ -57,6 +66,7 @@ int main() {
             }
             cout << endl;
         }
+        cout << dirty;
     #endif //debug
 
     #ifndef debug

@@ -1,20 +1,22 @@
 #ifndef BFS_H
 #define BFS_H
 #include "my_stl.h"
+#include <memory.h>
 
 #define debug
 
 using namespace std;
 
-extern char map[1005][1005], visit[1005][1005];
+extern char Map[1005][1005], visit[1005][1005];
 extern int dis_to[1005][1005];
+extern int dirty;
 
 
 pair<int, int> find_start(int m, int n) {
     pair<int, int> pt;
     for(int i = 0; i < m; ++i) {
         for(int j = 0; j < n; ++j) {
-            if(map[i][j] == 'R') {
+            if(Map[i][j] == 'R') {
                 pt.first = i;
                 pt.second = j;
                 return pt;
@@ -25,13 +27,15 @@ pair<int, int> find_start(int m, int n) {
 
 int BFS(int dis, int m, int n) {
     // pair to store the point's row and column
-    pair<int, int> pt = find_start(m, n);
+    pair<int, int> pt = find_start(m, n), st;
     int col, row;
     // queue to store point
     my_queue<pair<int, int>> next_pt;
     // queue to store minimum distance
     my_queue<int> min_dis;
     int cur_dis;
+    
+    //initialize
     for(int i = 0; i < m; ++i) {
         memset(visit[i], '0', n);
     }
@@ -40,6 +44,9 @@ int BFS(int dis, int m, int n) {
             dis_to[i][j] = -1;
         }
     }
+    dirty = 0;
+    st = pt;
+    // start BFS
     next_pt.push(pt);
     min_dis.push(0);
     #ifdef debug
@@ -63,37 +70,40 @@ int BFS(int dis, int m, int n) {
             return -1;
         }
         dis_to[row][col] = cur_dis;
-        if(col + 1 < n && map[row][col + 1] != '1') {
-            visit[row][col] += 1;
+        visit[row][col] = '1';
+        dirty++;
+        if(col + 1 < n && Map[row][col + 1] != '9') {
+            Map[row][col] += 1;
             pt.second += 1;
             next_pt.push(pt);
             min_dis.push(cur_dis + 1);
             pt.second -= 1;
         }
-        if(col - 1 > -1 && map[row][col - 1] != '1') {
-            visit[row][col] += 1;
+        if(col - 1 > -1 && Map[row][col - 1] != '9') {
+            Map[row][col] += 1;
             pt.second -= 1;
             next_pt.push(pt);
             min_dis.push(cur_dis + 1);
             pt.second += 1;
         }
-        if(row + 1 < m && map[row + 1][col] != '1') {
-            visit[row][col] += 1;
+        if(row + 1 < m && Map[row + 1][col] != '9') {
+            Map[row][col] += 1;
             pt.first += 1;
             next_pt.push(pt);
             min_dis.push(cur_dis + 1);
             pt.first -= 1;
         }
-        if(row - 1 > -1 && map[row - 1][col] != '1') {
-            visit[row][col] += 1;
+        if(row - 1 > -1 && Map[row - 1][col] != '9') {
+            Map[row][col] += 1;
             pt.first -= 1;
             next_pt.push(pt);
             min_dis.push(cur_dis + 1);
         }
     }
+    Map[st.first][st.second] = 'R';
     for(int i = 0; i < m; ++i) {
         for(int j = 0; j < n; ++j) {
-            if(visit[i][j] == '0' && map[i][j] == '0') {
+            if(visit[i][j] == '0' && Map[i][j] == '0') {
                 #ifdef debug
                     cout << "not reachable point: " << i << " " <<  j << endl;
                 #endif
