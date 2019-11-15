@@ -17,6 +17,7 @@ using namespace std;
 // ver0-2 : add dirty, change way to store floor data, revise BFS
 // ver1 : brutal force with no optimization, handling input file
 // ver1-1 : handling output and TA's testcase
+// ver1-2 : fix some bugs (output file)
 
 
 // map for debug
@@ -139,6 +140,7 @@ int main() {
     // start cleaning
     int clean;
     c_step = 0;
+    visit[str][stc] = '0';
     #ifdef debug
         cout << "start cleaning\n";
     #endif
@@ -176,7 +178,7 @@ int main() {
     }
     tmpout.close();
     #ifdef debug
-    cout << c_step << endl;
+    cout << c_step + 1 << endl;
     for(int i = 0; i < m; ++i) {
        visitfile << endl;
        for(int j = 0; j < n; ++j) {
@@ -186,23 +188,16 @@ int main() {
     visitfile.close();
     #endif // debug
     outstep.open("final.path");
-    tmpfile.open("tmp1.path");
-    outstep << c_step << endl;
+    tmpfile.open("tmp.path");
+    outstep << c_step + 1 << endl;
     char cc;
     while(tmpfile >> cc) {
         outstep << cc << " ";
         tmpfile >> cc;
         outstep << cc << endl;     
     }
+    outstep << str << " " << stc << endl;
     tmpfile.close();
-    tmpfile.open("tmp1.path");
-    while(tmpfile >> cc) {
-        outstep << cc << " ";
-        tmpfile >> cc;
-        outstep << cc << endl;    
-    }
-    tmpfile.close();
-
     outstep.close();
     return 0;
 }

@@ -16,8 +16,6 @@ int burtal(int pow_max, int str, int stc) {
     my_queue<int> rrow, rcol;
 
     while(pow_use < pow_max / 2) {
-        rrow.push(r_id);
-        rcol.push(c_id);
         #ifdef debug
             cout << r_id << " " << c_id << endl;
         #endif // debug
@@ -58,18 +56,26 @@ int burtal(int pow_max, int str, int stc) {
             }
         }
         if(dir == up) {
+             rrow.push(r_id);
+            rcol.push(c_id);
             r_id = r_id + 1;
             c_id = c_id;
         }
         else if(dir == down) {
+             rrow.push(r_id);
+             rcol.push(c_id);
             r_id = r_id - 1;
             c_id = c_id;
         }
         else if(dir == left) {
+            rrow.push(r_id);
+            rcol.push(c_id);
             r_id = r_id;
             c_id = c_id - 1;
         }
         else if(dir == right) {
+            rrow.push(r_id);
+            rcol.push(c_id);
             r_id = r_id;
             c_id = c_id + 1;
         }
@@ -78,19 +84,18 @@ int burtal(int pow_max, int str, int stc) {
         }
         pow_use++;
     }
-    
     #ifdef debug
         cout << "going back to charge\n";
     #endif // debug
     while(pow_use <= pow_max) {
+        if(r_id == str && c_id == stc) {
+            break;
+        }
         rrow.push(r_id);
         rcol.push(c_id);
         #ifdef debug 
             cout << r_id << " " << c_id << endl;
         #endif // debug 
-        if(r_id == str && c_id == stc) {
-            break;
-        }
         if(visit[r_id][c_id] == '1') {
             visit[r_id][c_id] = '0';
             clean++;

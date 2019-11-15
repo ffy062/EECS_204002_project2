@@ -100,6 +100,7 @@ int BFS(int dis, int m, int n) {
             min_dis.push(cur_dis + 1);
         }
     }
+    dirty--;
     Map[st.first][st.second] = 'R';
     for(int i = 0; i < m; ++i) {
         for(int j = 0; j < n; ++j) {
