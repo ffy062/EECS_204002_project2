@@ -10,7 +10,7 @@
 #include "clean_way.h"
 #include "clean_way.cpp"
 
-//#define debug
+#define debug
 //#define typeinput
 
 using namespace std;
@@ -26,6 +26,7 @@ using namespace std;
 // ver2-1 : fix some bug(final step)  optimize function find_dir_v
 // ver2-2 : optimize function find_dir_nv / find_dir_v
 // ver2-3 : fix some bug(counting step), optimize function burtal
+// ver2-4 : fix some bug(burtal)
 
 // map for debug
 char Map[1005][1005], visit[1005][1005];
@@ -124,7 +125,7 @@ int main() {
             visitfile.open("visit.data");
             for(int i = 0; i < m; ++i) {
                 for(int j = 0; j < n; ++j) {
-                    visitfile << "\t" << dis_to[i][j] << " ";
+                    visitfile << "\t" << visit[i][j] << " ";
                 }
                 visitfile << endl;
             }
@@ -155,7 +156,7 @@ int main() {
          #ifdef debug
             cout << "start cleaning reverse: Left: " << dirty << endl;
         #endif
-        int remain = clean_r(str, stc, m, n);
+        int remain = clean_r(str, stc, m, n, dis);
     }
     tmpout.close();
     #ifdef debug

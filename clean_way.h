@@ -11,7 +11,7 @@ extern int dis_to[1005][1005];
 extern int dirty, c_step;
 
 int clean_fs(int max_pow, int str, int stc);
-int clean_r(int str, int stc, int size_r, int size_c);
+int clean_r(int str, int stc, int size_r, int size_c, int pow_max);
 
 
 #endif

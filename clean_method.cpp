@@ -50,6 +50,8 @@ int burtal(int pow_max, int str, int stc) {
                 dir = find_dir_v(r_id, c_id, 1, pri);
                 if(dir == unknown) {
                     dir = find_dir_v(r_id, c_id, -1, pri);
+                    rrow.push(r_id);
+                    rcol.push(c_id);
                     if(dir == up) {
                         r_id = r_id + 1;
                         c_id = c_id;
@@ -72,6 +74,8 @@ int burtal(int pow_max, int str, int stc) {
                     }
                 }
                 else {
+                    rrow.push(r_id);
+                    rcol.push(c_id);
                     if(dir == up) {
                         r_id = r_id + 1;
                         c_id = c_id;
@@ -93,8 +97,6 @@ int burtal(int pow_max, int str, int stc) {
                         pri = right;
                     }
                 }
-                rrow.push(r_id);
-                rcol.push(c_id);
             }
             else {
                 rrow.push(r_id);
@@ -203,15 +205,82 @@ int burtal(int pow_max, int str, int stc) {
 
 
 
-int burtal_r(int str, int stc, int idx_r, int idx_c) {
+int burtal_r(int str, int stc, int idx_r, int idx_c, int pow_max) {
     int clean = 0, r_id = idx_r, c_id = idx_c;
-    int min_e, dir, pri = up;
-    my_stack<int> drow, dcol;
-    my_queue<int> rrow, rcol;
+    int min_e, dir, pri = up, more_s;
+    my_stack<int> drow, dcol, tdrow, tdcol;
+    my_queue<int> rrow, rcol, trrow, trcol;
 
     #ifdef debug 
         cout << "Back tracing\n";
     #endif // debug
+    more_s = pow_max / 2 - dis_to[idx_r][idx_c] - 1;
+    /*for(int i = 0; i < more_s; ++i) {
+        if(visit[r_id][c_id] == '1') {
+            visit[r_id][c_id] = '0';
+            clean++;
+        }
+        dir = find_dir_nv(r_id, c_id, 1, pri);
+        if(dir == unknown) {
+            dir = find_dir_nv(r_id, c_id, -1, pri);
+            if(dir == unknown) {
+                break;
+            }
+            else {
+                tdrow.push(r_id);
+                tdcol.push(c_id);
+                trrow.push(r_id);
+                trcol.push(c_id);
+                if(dir == up) {
+                r_id = r_id + 1;
+                c_id = c_id;
+                pri = up;
+                }
+                else if(dir == down) {
+                r_id = r_id - 1;
+                c_id = c_id;
+                pri = down;
+                }
+                else if(dir == left) {
+                r_id = r_id;
+                c_id = c_id - 1;
+                pri = left;
+                }
+                else if(dir == right) {
+                r_id = r_id;
+                c_id = c_id + 1;
+                pri = right;
+                }
+            }
+        }
+        else {
+        tdrow.push(r_id);
+        tdcol.push(c_id);
+        trrow.push(r_id);
+        trcol.push(c_id);
+        if(dir == up) {
+            r_id = r_id + 1;
+            c_id = c_id;
+            pri = up;
+
+        }
+        else if(dir == down) {
+            r_id = r_id - 1;
+            c_id = c_id;
+            pri = down;
+        }
+        else if(dir == left) {
+            r_id = r_id;
+            c_id = c_id - 1;
+            pri = left;
+        }
+        else if(dir == right) {
+            r_id = r_id;
+            c_id = c_id + 1;
+            pri = right;
+        }
+        }
+    }*/
     while(r_id != str || c_id != stc) {
         drow.push(r_id);
         dcol.push(c_id);

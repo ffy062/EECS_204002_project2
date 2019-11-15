@@ -18,7 +18,7 @@ extern int dirty, c_step;
 extern ofstream tmpout;
 
 int burtal(int pow_max, int str, int stc);
-int burtal_r(int str, int stc, int idx_r, int idx_c);
+int burtal_r(int str, int stc, int idx_r, int idx_c, int pow_max);
 int find_dir_nv(int r_id, int c_id, int d, int pri); 
 int find_dir_v(int r_id, int c_id, int d, int pri);
 

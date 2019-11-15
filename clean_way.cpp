@@ -29,7 +29,7 @@ int clean_fs(int max_pow, int str, int stc) {
     //vv.close();
     return dirty;
 }
-int clean_r(int str, int stc, int size_r, int size_c) {
+int clean_r(int str, int stc, int size_r, int size_c, int pow_max) {
     int clean;
     int sr, sc, dr, dc;
     //ofstream cc;
@@ -67,7 +67,7 @@ int clean_r(int str, int stc, int size_r, int size_c) {
                 #ifdef debug
                     cout << "cleaning reverse " << sr + dr*i << sc + dc*j << endl;
                 #endif
-                clean = burtal_r(str, stc, sr + dr*i, sc + dc*j);
+                clean = burtal_r(str, stc, sr + dr*i, sc + dc*j, pow_max);
                 //cc << endl << clean; 
                 dirty -= clean;
                 if(dirty == 0) {
