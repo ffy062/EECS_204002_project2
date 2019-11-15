@@ -16,21 +16,24 @@ using namespace std;
 // ver0-1 : spilt function to different file 
 // ver0-2 : add dirty, change way to store floor data, revise BFS
 // ver1 : brutal force with no optimization, handling input file
+// ver1-1 : handling output and TA's testcase
 
 
 // map for debug
 char Map[1005][1005], visit[1005][1005];
 int dis_to[1005][1005];
 int dirty, c_step;
+ofstream tmpout;
 
 
 int main() {
     ios_base::sync_with_stdio(false);
     
     int dis, m, n, str, stc;
-    ifstream floor;
+    ifstream floor, tmpfile;
     ofstream outstep;
     floor.open("floor.data");
+    tmpout.open("tmp.path");
     #ifdef typeinput
         cin >> m >> n >> dis;
         for(int i = 0, r = 0; i < m; ++i) {
@@ -109,6 +112,14 @@ int main() {
             return -1;
         }
         #ifdef debug
+            ofstream visitfile;
+            visitfile.open("visit.data");
+            for(int i = 0; i < m; ++i) {
+                for(int j = 0; j < n; ++j) {
+                    visitfile << visit[i][j];
+                }
+                visitfile << endl;
+            }
             for(int i = 0; i < m; ++i) {
                 for(int j = 0; j < n; ++j) {
                     cout << Map[i][j];
@@ -136,7 +147,6 @@ int main() {
             cout << "cleaning " << endl;
         #endif
         clean = burtal(dis, str, stc);
-       
         if(clean == 0)
             break;
         dirty -= clean;
@@ -145,7 +155,7 @@ int main() {
         #endif
     }
     #ifdef debug
-        cout << "start cleaning reverse\n";
+        cout << "start cleaning reverse: Left: " << dirty << endl;
     #endif
     for(int i = 0; i < m; ++i) {
         for(int j = 0; j < n; ++j) {
@@ -164,7 +174,35 @@ int main() {
             }
         }
     }
+    tmpout.close();
+    #ifdef debug
     cout << c_step << endl;
+    for(int i = 0; i < m; ++i) {
+       visitfile << endl;
+       for(int j = 0; j < n; ++j) {
+            visitfile << visit[i][j];
+        }
+    }
+    visitfile.close();
+    #endif // debug
+    outstep.open("final.path");
+    tmpfile.open("tmp1.path");
+    outstep << c_step << endl;
+    char cc;
+    while(tmpfile >> cc) {
+        outstep << cc << " ";
+        tmpfile >> cc;
+        outstep << cc << endl;     
+    }
+    tmpfile.close();
+    tmpfile.open("tmp1.path");
+    while(tmpfile >> cc) {
+        outstep << cc << " ";
+        tmpfile >> cc;
+        outstep << cc << endl;    
+    }
+    tmpfile.close();
 
+    outstep.close();
     return 0;
 }
