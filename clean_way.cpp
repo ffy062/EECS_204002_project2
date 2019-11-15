@@ -20,14 +20,40 @@ int clean_r(int str, int stc, int size_r, int size_c) {
     int clean;
     int sr, sc, dr, dc;
 
-    //if(str < size_r / 2 && stc < size_c / 2)
+    if(str < size_r / 2 && stc < size_c / 2) {
+        sr = size_r - 1;
+        sc = size_c - 1;
+        dr = -1;
+        dc = -1;
+    }
+    else if(str < size_r / 2 && stc >= size_c / 2) {
+        sr = size_r - 1;
+        sc = 0;
+        dr = -1;
+        dc = 1;
+    }
+    else if(str >= size_r / 2 && stc < size_c / 2) {
+        sr = 0;
+        sc = size_c - 1;
+        dr = 1;
+        dc = -1;
+    }
+    else {
+        sr = 0;
+        sc = 0;
+        dr = 1;
+        dc = 1;
+    }
      for(int i = 0; i < size_r; ++i) {
         for(int j = 0; j < size_c; ++j) {
-            if(visit[i][j] == '1') {
+            #ifdef debug 
+                //cout << sr + dr*i << " " << sc + dc*j << endl;
+            #endif // debug
+            if(visit[sr + dr*i][sc + dc*j] == '1') {
                 #ifdef debug
-                    cout << "cleaning reverse " << i << j << endl;
+                    cout << "cleaning reverse " << sr + dr*i << sc + dc*j << endl;
                 #endif
-                clean = burtal_r(str, stc, i, j);
+                clean = burtal_r(str, stc, sr + dr*i, sc + dc*j);
                 dirty -= clean;
                 if(dirty == 0) {
                     break;

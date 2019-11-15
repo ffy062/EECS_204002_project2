@@ -21,7 +21,7 @@ using namespace std;
 // ver1-1 : handling output and TA's testcase
 // ver1-2 : fix some bugs (output file and cleaning area calculation)
 // ver1-3 : add function find_dir_nv / find_dir_v, file clean_way.h clean_way.cpp, fix some bugs (output file)
-// ver2-0 :  
+// ver2-0 :  optimize function clean_r 
 
 
 // map for debug
@@ -148,10 +148,10 @@ int main() {
         cout << "start cleaning\n";
     #endif
     int remain = clean_fs(dis, str, stc);
-    #ifdef debug
-        cout << "start cleaning reverse: Left: " << dirty << endl;
-    #endif
     if(remain > 0) {
+         #ifdef debug
+            cout << "start cleaning reverse: Left: " << dirty << endl;
+        #endif
         int remain = clean_r(str, stc, m, n);
     }
     tmpout.close();
