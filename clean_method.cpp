@@ -45,28 +45,80 @@ int burtal(int pow_max, int str, int stc) {
             pri = right;
         }
         else {
-            dir = find_dir_v(r_id, c_id, 1, pri);
-            rrow.push(r_id);
-            rcol.push(c_id);
-            if(dir == up) {
-            r_id = r_id + 1;
-            c_id = c_id;
-            pri = up;
+            dir = find_dir_nv(r_id, c_id, -1, pri);
+            if(dir == unknown) {
+                dir = find_dir_v(r_id, c_id, 1, pri);
+                if(dir == unknown) {
+                    dir = find_dir_v(r_id, c_id, -1, pri);
+                    if(dir == up) {
+                        r_id = r_id + 1;
+                        c_id = c_id;
+                        pri = up;
+                    }
+                    else if(dir == down) {
+                        r_id = r_id - 1;
+                        c_id = c_id;
+                        pri = down;
+                    }
+                    else if(dir == left) {
+                        r_id = r_id;
+                        c_id = c_id - 1;
+                        pri = left;
+                    }
+                    else if(dir == right) {
+                        r_id = r_id;
+                        c_id = c_id + 1;
+                        pri = right;
+                    }
+                }
+                else {
+                    if(dir == up) {
+                        r_id = r_id + 1;
+                        c_id = c_id;
+                        pri = up;
+                    }
+                    else if(dir == down) {
+                        r_id = r_id - 1;
+                        c_id = c_id;
+                        pri = down;
+                    }
+                    else if(dir == left) {
+                        r_id = r_id;
+                        c_id = c_id - 1;
+                        pri = left;
+                    }
+                    else if(dir == right) {
+                        r_id = r_id;
+                        c_id = c_id + 1;
+                        pri = right;
+                    }
+                }
+                rrow.push(r_id);
+                rcol.push(c_id);
             }
-             else if(dir == down) {
-            r_id = r_id - 1;
-            c_id = c_id;
-            pri = down;
-            }
-             else if(dir == left) {
-            r_id = r_id;
-            c_id = c_id - 1;
-            pri = left;
-            }
-            else if(dir == right) {
-            r_id = r_id;
-            c_id = c_id + 1;
-            pri = right;
+            else {
+                rrow.push(r_id);
+                rcol.push(c_id);
+                if(dir == up) {
+                    r_id = r_id + 1;
+                    c_id = c_id;
+                    pri = up;
+                }
+                else if(dir == down) {
+                    r_id = r_id - 1;
+                    c_id = c_id;
+                    pri = down;
+                }
+                else if(dir == left) {
+                    r_id = r_id;
+                    c_id = c_id - 1;
+                    pri = left;
+                }
+                else if(dir == right) {
+                    r_id = r_id;
+                    c_id = c_id + 1;
+                    pri = right;
+                }
             }
         }
         pow_use++;
@@ -74,7 +126,7 @@ int burtal(int pow_max, int str, int stc) {
     #ifdef debug
         cout << "going back to charge\n";
     #endif // debug
-    while(pow_use <= pow_max) {
+    while(pow_use < pow_max) {
         if(r_id == str && c_id == stc) {
             break;
         }
@@ -133,6 +185,10 @@ int burtal(int pow_max, int str, int stc) {
             }
         }
         pow_use++;
+    }
+    if(r_id != str || c_id != stc) {
+        cout << "out of battery\n";
+        exit(1);
     }
     if(clean != 0) {
         while(!rrow.check_empty()) {
@@ -279,6 +335,9 @@ int find_dir_v(int r_id, int c_id, int d, int pri) {
     max_ed[2] = visit[r_id+1][c_id-1] - '0' + visit[r_id-1][c_id-1] - '0' + visit[r_id][c_id-2] - '0' + visit[r_id][c_id] - '0';
     max_ed[3] = visit[r_id+1][c_id+1] - '0' + visit[r_id-1][c_id+1] - '0' + visit[r_id][c_id] - '0' + visit[r_id][c_id+2] - '0';
     int tmp[4][2] = {{1, 0}, {-1, 0}, {0, -1}, {0, 1}};
+    if(pri == unknown) {
+        pri = up;
+    }
     
     for(int i = 0; i < 4; ++i) {
         int idx = (i + pri - 1) % 4;

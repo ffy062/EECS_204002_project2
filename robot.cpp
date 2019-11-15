@@ -25,7 +25,7 @@ using namespace std;
 // ver2-0 : optimize function clean_r
 // ver2-1 : fix some bug(final step)  optimize function find_dir_v
 // ver2-2 : optimize function find_dir_nv / find_dir_v
-
+// ver2-3 : fix some bug(counting step), optimize function burtal
 
 // map for debug
 char Map[1005][1005], visit[1005][1005];
@@ -124,7 +124,7 @@ int main() {
             visitfile.open("visit.data");
             for(int i = 0; i < m; ++i) {
                 for(int j = 0; j < n; ++j) {
-                    visitfile << visit[i][j];
+                    visitfile << "\t" << dis_to[i][j] << " ";
                 }
                 visitfile << endl;
             }

@@ -2,9 +2,9 @@
 
 int clean_fs(int max_pow, int str, int stc) {
      int clean;
-     ofstream cc, vv;
-     cc.open("each_clean.data");
-     vv.open("each_v.txt");
+     //ofstream cc, vv;
+     //cc.open("each_clean.data");
+     //vv.open("each_v.txt");
      while(dirty > 0) {
         #ifdef debug
             cout << "cleaning " << endl;
@@ -13,27 +13,27 @@ int clean_fs(int max_pow, int str, int stc) {
         if(clean == 0)
             break;
         dirty -= clean;
-        cc << clean << endl;
+        /* cc << clean << endl;
         for(int i = 0; i < 100; ++i) {
-                for(int j = 0; j < 500; ++j) {
-                    vv << visit[i][j];
-                }
-                vv << endl;
+            for(int j = 0; j < 500; ++j) {
+                vv << visit[i][j];
+            }
+            vv << endl;
         }
-        vv << endl << endl;  
+        vv << endl << endl; */   
         #ifdef debug
             cout << "Clean: " << clean << "Left: " << dirty << endl;
         #endif
     }
-    cc.close();
-    vv.close();
+    //cc.close();
+    //vv.close();
     return dirty;
 }
 int clean_r(int str, int stc, int size_r, int size_c) {
     int clean;
     int sr, sc, dr, dc;
-    ofstream cc;
-    cc.open("each_clean_r.data");
+    //ofstream cc;
+    //cc.open("each_clean_r.data");
     if(str < size_r / 2 && stc < size_c / 2) {
         sr = size_r - 1;
         sc = size_c - 1;
@@ -68,7 +68,7 @@ int clean_r(int str, int stc, int size_r, int size_c) {
                     cout << "cleaning reverse " << sr + dr*i << sc + dc*j << endl;
                 #endif
                 clean = burtal_r(str, stc, sr + dr*i, sc + dc*j);
-                cc << endl << clean; 
+                //cc << endl << clean; 
                 dirty -= clean;
                 if(dirty == 0) {
                     break;
@@ -79,5 +79,6 @@ int clean_r(int str, int stc, int size_r, int size_c) {
             }
         }
     }
-    cc.close();
+    // cc.close();
+     return clean;
 }
