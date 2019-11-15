@@ -3,7 +3,7 @@
 #include "my_stl.h"
 #include <memory.h>
 
-#define debug
+//#define debug
 
 using namespace std;
 

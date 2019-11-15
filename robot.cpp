@@ -9,7 +9,7 @@
 #include "clean_way.h"
 #include "clean_way.cpp"
 
-#define debug
+//#define debug
 //#define typeinput
 
 using namespace std;

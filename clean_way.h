@@ -4,7 +4,7 @@
 #include "clean_method.h"
 #include <fstream>
 
-#define debug
+//#define debug
 
 extern char Map[1005][1005], visit[1005][1005];
 extern int dis_to[1005][1005];

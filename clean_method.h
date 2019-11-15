@@ -4,7 +4,7 @@
 #include "iostream" 
 #include <fstream>
 
-#define debug
+//#define debug
 
 #define unknown 0
 #define up 1
