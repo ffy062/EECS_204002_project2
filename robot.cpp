@@ -6,6 +6,8 @@
 #include "bfs.h"
 #include "clean_method.h"
 #include "clean_method.cpp"
+#include "clean_way.h"
+#include "clean_way.cpp"
 
 #define debug
 //#define typeinput
@@ -18,7 +20,8 @@ using namespace std;
 // ver1-0 : brutal force with no optimization, handling input file
 // ver1-1 : handling output and TA's testcase
 // ver1-2 : fix some bugs (output file and cleaning area calculation)
-// ver1-3 : add function find_dir_nv / find_dir_v
+// ver1-3 : add function find_dir_nv / find_dir_v, file clean_way.h clean_way.cpp, fix some bugs (output file)
+// ver2-0 :  
 
 
 // map for debug
@@ -139,43 +142,17 @@ int main() {
     #endif // fileinput
     
     // start cleaning
-    int clean;
     c_step = 0;
     visit[str][stc] = '0';
     #ifdef debug
         cout << "start cleaning\n";
     #endif
-    while(dirty > 0) {
-        #ifdef debug
-            cout << "cleaning " << endl;
-        #endif
-        clean = burtal(dis, str, stc);
-        if(clean == 0)
-            break;
-        dirty -= clean;
-         #ifdef debug
-            cout << "Clean: " << clean << "Left: " << dirty << endl;
-        #endif
-    }
+    int remain = clean_fs(dis, str, stc);
     #ifdef debug
         cout << "start cleaning reverse: Left: " << dirty << endl;
     #endif
-    for(int i = 0; i < m; ++i) {
-        for(int j = 0; j < n; ++j) {
-            if(visit[i][j] == '1') {
-                #ifdef debug
-                    cout << "cleaning reverse " << i << j << endl;
-                #endif
-                clean = burtal_r(str, stc, i, j);
-                dirty -= clean;
-                if(dirty == 0) {
-                    break;
-                }
-                #ifdef debug
-                    cout << "Clean: " << clean << "Left: " << dirty << endl;
-                #endif
-            }
-        }
+    if(remain > 0) {
+        int remain = clean_r(str, stc, m, n);
     }
     tmpout.close();
     #ifdef debug
@@ -191,7 +168,7 @@ int main() {
     outstep.open("final.path");
     tmpfile.open("tmp.path");
     outstep << c_step + 1 << endl;
-    char cc;
+    int cc;
     while(tmpfile >> cc) {
         outstep << cc << " ";
         tmpfile >> cc;

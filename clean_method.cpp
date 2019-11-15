@@ -2,14 +2,6 @@
 
 using namespace std;
 
-#define debug
-
-#define unknown 0
-#define up 1
-#define down 2
-#define left 3
-#define right 4
-
 int burtal(int pow_max, int str, int stc) {
     int clean = 0, pow_use = 0, r_id = str, c_id = stc;
     int dir;
