@@ -36,8 +36,8 @@ int BFS(int dis, int m, int n) {
     int cur_dis;
     
     //initialize
-    for(int i = 0; i < m; ++i) {
-        memset(visit[i], '0', n);
+    for(int i = 0; i < m + 2; ++i) {
+        memset(visit[i], '0', n + 2);
     }
     for(int i = 0; i < m; ++i) {
         for(int j = 0; j < n; ++j) {

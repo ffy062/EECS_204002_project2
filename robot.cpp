@@ -24,6 +24,7 @@ using namespace std;
 // ver1-3 : add function find_dir_nv / find_dir_v, file clean_way.h clean_way.cpp, fix some bugs (output file)
 // ver2-0 : optimize function clean_r
 // ver2-1 : fix some bug(final step)  optimize function find_dir_v
+// ver2-2 : optimize function find_dir_nv / find_dir_v
 
 
 // map for debug

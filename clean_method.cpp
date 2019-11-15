@@ -4,7 +4,7 @@ using namespace std;
 
 int burtal(int pow_max, int str, int stc) {
     int clean = 0, pow_use = 0, r_id = str, c_id = stc;
-    int dir;
+    int dir, pri = up;
     my_queue<int> rrow, rcol;
 
     while(pow_use < pow_max / 2) {
@@ -15,34 +15,59 @@ int burtal(int pow_max, int str, int stc) {
             visit[r_id][c_id] = '0';
             clean++;
         }
-        dir = find_dir_nv(r_id, c_id, 1);
-       
+        dir = find_dir_nv(r_id, c_id, 1, pri);
         if(dir == up) {
             rrow.push(r_id);
             rcol.push(c_id);
             r_id = r_id + 1;
             c_id = c_id;
+            pri = up;
         }
         else if(dir == down) {
              rrow.push(r_id);
              rcol.push(c_id);
             r_id = r_id - 1;
             c_id = c_id;
+            pri = down;
         }
         else if(dir == left) {
             rrow.push(r_id);
             rcol.push(c_id);
             r_id = r_id;
             c_id = c_id - 1;
+            pri = left;
         }
         else if(dir == right) {
             rrow.push(r_id);
             rcol.push(c_id);
             r_id = r_id;
             c_id = c_id + 1;
+            pri = right;
         }
         else {
-            break;
+            dir = find_dir_v(r_id, c_id, 1, pri);
+            rrow.push(r_id);
+            rcol.push(c_id);
+            if(dir == up) {
+            r_id = r_id + 1;
+            c_id = c_id;
+            pri = up;
+            }
+             else if(dir == down) {
+            r_id = r_id - 1;
+            c_id = c_id;
+            pri = down;
+            }
+             else if(dir == left) {
+            r_id = r_id;
+            c_id = c_id - 1;
+            pri = left;
+            }
+            else if(dir == right) {
+            r_id = r_id;
+            c_id = c_id + 1;
+            pri = right;
+            }
         }
         pow_use++;
     }
@@ -62,41 +87,49 @@ int burtal(int pow_max, int str, int stc) {
             visit[r_id][c_id] = '0';
             clean++;
         }
-        dir = find_dir_nv(r_id, c_id, -1);
+        dir = find_dir_nv(r_id, c_id, -1, pri);
         
         if(dir == up) {
             r_id = r_id + 1;
             c_id = c_id;
+            pri = up;
         }
         else if(dir == down) {
             r_id = r_id - 1;
             c_id = c_id;
+            pri = down;
         }
         else if(dir == left) {
             r_id = r_id;
             c_id = c_id - 1;
+            pri = left;
         }
         else if(dir == right) {
             r_id = r_id;
             c_id = c_id + 1;
+            pri = right;
         }
         else {
-            dir = find_dir_v(r_id, c_id, -1);
+            dir = find_dir_v(r_id, c_id, -1, pri);
             if(dir == up) {
             r_id = r_id + 1;
             c_id = c_id;
+            pri = up;
             }
              else if(dir == down) {
             r_id = r_id - 1;
             c_id = c_id;
+            pri = down;
             }
              else if(dir == left) {
             r_id = r_id;
             c_id = c_id - 1;
+            pri = left;
             }
             else if(dir == right) {
             r_id = r_id;
             c_id = c_id + 1;
+            pri = right;
             }
         }
         pow_use++;
@@ -116,7 +149,7 @@ int burtal(int pow_max, int str, int stc) {
 
 int burtal_r(int str, int stc, int idx_r, int idx_c) {
     int clean = 0, r_id = idx_r, c_id = idx_c;
-    int min_e, dir;
+    int min_e, dir, pri = up;
     my_stack<int> drow, dcol;
     my_queue<int> rrow, rcol;
 
@@ -135,41 +168,50 @@ int burtal_r(int str, int stc, int idx_r, int idx_c) {
             visit[r_id][c_id] = '0';
             clean++;
         }
-        dir = find_dir_nv(r_id, c_id, -1);
+        dir = find_dir_nv(r_id, c_id, -1, pri);
         
         if(dir == up) {
             r_id = r_id + 1;
             c_id = c_id;
+            pri = up;
+
         }
         else if(dir == down) {
             r_id = r_id - 1;
             c_id = c_id;
+            pri = down;
         }
         else if(dir == left) {
             r_id = r_id;
             c_id = c_id - 1;
+            pri = left;
         }
         else if(dir == right) {
             r_id = r_id;
             c_id = c_id + 1;
+            pri = right;
         }
         else {
-            dir = find_dir_v(r_id, c_id, -1);
+            dir = find_dir_v(r_id, c_id, -1, pri);
             if(dir == up) {
                 r_id = r_id + 1;
                 c_id = c_id;
+                pri = up;
             }
              else if(dir == down) {
                 r_id = r_id - 1;
                 c_id = c_id;
+                pri = down;
             }
              else if(dir == left) {
                 r_id = r_id;
                 c_id = c_id - 1;
+                pri = left;
             }
             else if(dir == right) {
                 r_id = r_id;
                 c_id = c_id + 1;
+                pri = right;
             }
         }
     }
@@ -201,91 +243,60 @@ int burtal_r(int str, int stc, int idx_r, int idx_c) {
     return clean;
 }
 
-int find_dir_nv(int r_id, int c_id, int d) {
-    int dir = unknown, min_e = 5;
-    if(Map[r_id + 1][c_id] != '9' && visit[r_id + 1][c_id] == '1') {
-            if(dis_to[r_id + 1][c_id] == dis_to[r_id][c_id] + d) {
-                dir = up;
-                min_e = Map[r_id + 1][c_id] - '0';
-            }
-        } 
-    if(Map[r_id - 1][c_id] != '9' && visit[r_id - 1][c_id] == '1') {
-        if(dis_to[r_id - 1][c_id] == dis_to[r_id][c_id] + d) {
-           if(Map[r_id - 1][c_id] - '0' < min_e) {
-                dir = down;
-               min_e = Map[r_id - 1][c_id] - '0';
-            }
-        }
-    } 
-    if(Map[r_id][c_id - 1] != '9' && visit[r_id][c_id - 1] == '1') {
-        if(dis_to[r_id][c_id - 1] == dis_to[r_id][c_id] + d) {
-            if(Map[r_id][c_id - 1] - '0' < min_e) {
-                dir = left;
-                min_e = Map[r_id][c_id - 1] - '0';
-            }
-        }
-    } 
-    if(Map[r_id][c_id + 1] != '9' && visit[r_id][c_id + 1] == '1') {
-        if(dis_to[r_id][c_id + 1] == dis_to[r_id][c_id] + d) {
-            if(Map[r_id][c_id + 1] - '0' < min_e) {
-                dir = right;
-                min_e = Map[r_id][c_id + 1] - '0';
-            }
-        }
-    }
-    return dir;
-}
-
-
-
-int find_dir_v(int r_id, int c_id, int d) {
-    int dir = unknown, max_e = 0;
+int find_dir_nv(int r_id, int c_id, int d, int pri) {
+    int dir = unknown, min_e = 5, min_ed[4];
+    min_ed[0] = visit[r_id+2][c_id] - '0' + visit[r_id][c_id] - '0' + visit[r_id+1][c_id-1] - '0' + visit[r_id+1][c_id+1] - '0'; // up
+    min_ed[1] = visit[r_id][c_id] - '0' + visit[r_id-2][c_id] - '0' + visit[r_id-1][c_id-1] - '0' + visit[r_id-1][c_id+1] - '0'; // down
+    min_ed[2] = visit[r_id+1][c_id-1] - '0' + visit[r_id-1][c_id-1] - '0' + visit[r_id][c_id-2] - '0' + visit[r_id][c_id] - '0'; // left
+    min_ed[3] = visit[r_id+1][c_id+1] - '0' + visit[r_id-1][c_id+1] - '0' + visit[r_id][c_id] - '0' + visit[r_id][c_id+2] - '0'; // right
+    int tmp[4][2] = {{1, 0}, {-1, 0}, {0, -1}, {0, 1}};
     
-    if(Map[r_id + 1][c_id] != '9') {
-            if(dis_to[r_id + 1][c_id] == dis_to[r_id][c_id] + d) {
-                dir = up;
-                max_e = Map[r_id + 1][c_id] - '0';
-                if(dis_to[r_id + 1][c_id] == 0) {
-                    dir = up;
-                    max_e = 5;
+    for(int i = 0; i < 4; ++i) {
+        int idx = (i + pri - 1) % 4;
+        if(Map[r_id + tmp[idx][0]][c_id + tmp[idx][1]] != '9' && visit[r_id + tmp[idx][0]][c_id + tmp[idx][1]] == '1') {
+                if(dis_to[r_id + tmp[idx][0]][c_id + tmp[idx][1]] == dis_to[r_id][c_id] + d) {
+                    if(min_ed[idx] < min_e) {
+                        dir = idx + 1;
+                        min_e = min_ed[idx];
+                    }
+                    if(dis_to[r_id + tmp[idx][0]][c_id + tmp[idx][1]] == 0) {
+                        dir = idx + 1;
+                        min_e = min_ed[idx];
+                        break;
+                    }
                 }
-            }
         } 
-    if(Map[r_id - 1][c_id] != '9') {
-        if(dis_to[r_id - 1][c_id] == dis_to[r_id][c_id] + d) {
-            if(Map[r_id - 1][c_id] - '0' > max_e) {
-                dir = down;
-                max_e = Map[r_id - 1][c_id] - '0';
-            }
-            if(dis_to[r_id - 1][c_id] == 0) {
-                dir = down;
-                max_e = 5;
-            }
-        }
-    } 
-    if(Map[r_id][c_id - 1] != '9') {
-       if(dis_to[r_id][c_id - 1] == dis_to[r_id][c_id] + d) {
-           if(Map[r_id][c_id - 1] - '0' > max_e) {
-                dir = left;
-                max_e = Map[r_id][c_id - 1] - '0';
-            }
-            if(dis_to[r_id][c_id - 1] == 0) {
-                dir = left;
-                max_e = 5;
-            }
-        }
-    } 
-    if(Map[r_id][c_id + 1] != '9') {
-        if(dis_to[r_id][c_id + 1] == dis_to[r_id][c_id] + d) {
-            if(Map[r_id][c_id + 1] - '0' > max_e) {
-                dir = right;
-                max_e = Map[r_id][c_id + 1] - '0';
-            }
-           if(dis_to[r_id][c_id + 1] == 0) {
-                dir = right;
-                max_e = 5;
-            }
-        }
     }
     return dir;
 }
+
+
+
+int find_dir_v(int r_id, int c_id, int d, int pri) {
+    int dir = unknown, max_e = -1, max_ed[4];
+    max_ed[0] = visit[r_id+2][c_id] - '0' + visit[r_id][c_id] - '0' + visit[r_id+1][c_id-1] - '0' + visit[r_id+1][c_id+1] - '0';
+    max_ed[1] = visit[r_id][c_id] - '0' + visit[r_id-2][c_id] - '0' + visit[r_id-1][c_id-1] - '0' + visit[r_id-1][c_id+1] - '0';
+    max_ed[2] = visit[r_id+1][c_id-1] - '0' + visit[r_id-1][c_id-1] - '0' + visit[r_id][c_id-2] - '0' + visit[r_id][c_id] - '0';
+    max_ed[3] = visit[r_id+1][c_id+1] - '0' + visit[r_id-1][c_id+1] - '0' + visit[r_id][c_id] - '0' + visit[r_id][c_id+2] - '0';
+    int tmp[4][2] = {{1, 0}, {-1, 0}, {0, -1}, {0, 1}};
+    
+    for(int i = 0; i < 4; ++i) {
+        int idx = (i + pri - 1) % 4;
+        if(Map[r_id + tmp[idx][0]][c_id + tmp[idx][1]] != '9') {
+                if(dis_to[r_id + tmp[idx][0]][c_id + tmp[idx][1]] == dis_to[r_id][c_id] + d) {
+                    if(max_ed[idx] > max_e) {
+                        dir = idx + 1;
+                        max_e = max_ed[idx];
+                    }
+                    if(dis_to[r_id + tmp[idx][0]][c_id + tmp[idx][1]] == 0) {
+                        dir = idx + 1;
+                        max_e = max_ed[idx];
+                        break;
+                    }
+                }
+        } 
+    }
+    return dir;
+}
+
+
