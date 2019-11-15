@@ -12,12 +12,13 @@
 
 using namespace std;
 
-// ver0 : construct my_queue, BFS, handling input
+// ver0-0 : construct my_queue, BFS, handling input
 // ver0-1 : spilt function to different file 
 // ver0-2 : add dirty, change way to store floor data, revise BFS
-// ver1 : brutal force with no optimization, handling input file
+// ver1-0 : brutal force with no optimization, handling input file
 // ver1-1 : handling output and TA's testcase
-// ver1-2 : fix some bugs (output file)
+// ver1-2 : fix some bugs (output file and cleaning area calculation)
+// ver1-3 : add function find_dir_nv / find_dir_v
 
 
 // map for debug
