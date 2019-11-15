@@ -3,6 +3,7 @@
 #include <string>
 #include <memory.h>
 #include "my_stl.h"
+#include "my_stl.cpp"
 #include "bfs.h"
 #include "clean_method.h"
 #include "clean_method.cpp"
