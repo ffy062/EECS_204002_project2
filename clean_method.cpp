@@ -236,54 +236,56 @@ int find_dir_nv(int r_id, int c_id, int d) {
     return dir;
 }
 
+
+
 int find_dir_v(int r_id, int c_id, int d) {
-    int dir = unknown, min_e = 5;
+    int dir = unknown, max_e = 0;
     
     if(Map[r_id + 1][c_id] != '9') {
             if(dis_to[r_id + 1][c_id] == dis_to[r_id][c_id] + d) {
                 dir = up;
-                min_e = Map[r_id + 1][c_id] - '0';
+                max_e = Map[r_id + 1][c_id] - '0';
                 if(dis_to[r_id + 1][c_id] == 0) {
                     dir = up;
-                    min_e = '0';
+                    max_e = 5;
                 }
             }
         } 
-        if(Map[r_id - 1][c_id] != '9') {
-            if(dis_to[r_id - 1][c_id] == dis_to[r_id][c_id] + d) {
-                if(Map[r_id - 1][c_id] - '0' < min_e) {
-                    dir = down;
-                    min_e = Map[r_id - 1][c_id] - '0';
-                }
-                if(dis_to[r_id - 1][c_id] == 0) {
-                    dir = down;
-                    min_e = '0';
-                }
+    if(Map[r_id - 1][c_id] != '9') {
+        if(dis_to[r_id - 1][c_id] == dis_to[r_id][c_id] + d) {
+            if(Map[r_id - 1][c_id] - '0' > max_e) {
+                dir = down;
+                max_e = Map[r_id - 1][c_id] - '0';
             }
-        } 
-        if(Map[r_id][c_id - 1] != '9') {
-            if(dis_to[r_id][c_id - 1] == dis_to[r_id][c_id] + d) {
-               if(Map[r_id][c_id - 1] - '0' < min_e) {
-                    dir = left;
-                    min_e = Map[r_id][c_id - 1] - '0';
-                }
-                if(dis_to[r_id][c_id - 1] == 0) {
-                    dir = left;
-                    min_e = '0';
-                }
-            }
-        } 
-        if(Map[r_id][c_id + 1] != '9') {
-            if(dis_to[r_id][c_id + 1] == dis_to[r_id][c_id] + d) {
-                if(Map[r_id][c_id + 1] - '0' < min_e) {
-                    dir = right;
-                    min_e = Map[r_id][c_id + 1] - '0';
-                }
-                if(dis_to[r_id][c_id + 1] == 0) {
-                    dir = right;
-                       min_e = '0';
-                }
+            if(dis_to[r_id - 1][c_id] == 0) {
+                dir = down;
+                max_e = 5;
             }
         }
+    } 
+    if(Map[r_id][c_id - 1] != '9') {
+       if(dis_to[r_id][c_id - 1] == dis_to[r_id][c_id] + d) {
+           if(Map[r_id][c_id - 1] - '0' > max_e) {
+                dir = left;
+                max_e = Map[r_id][c_id - 1] - '0';
+            }
+            if(dis_to[r_id][c_id - 1] == 0) {
+                dir = left;
+                max_e = 5;
+            }
+        }
+    } 
+    if(Map[r_id][c_id + 1] != '9') {
+        if(dis_to[r_id][c_id + 1] == dis_to[r_id][c_id] + d) {
+            if(Map[r_id][c_id + 1] - '0' > max_e) {
+                dir = right;
+                max_e = Map[r_id][c_id + 1] - '0';
+            }
+           if(dis_to[r_id][c_id + 1] == 0) {
+                dir = right;
+                max_e = 5;
+            }
+        }
+    }
     return dir;
 }

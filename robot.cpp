@@ -21,7 +21,8 @@ using namespace std;
 // ver1-1 : handling output and TA's testcase
 // ver1-2 : fix some bugs (output file and cleaning area calculation)
 // ver1-3 : add function find_dir_nv / find_dir_v, file clean_way.h clean_way.cpp, fix some bugs (output file)
-// ver2-0 :  optimize function clean_r 
+// ver2-0 : optimize function clean_r
+// ver2-1 : fix some bug(final step)  optimize function find_dir_v
 
 
 // map for debug
@@ -156,7 +157,7 @@ int main() {
     }
     tmpout.close();
     #ifdef debug
-    cout << c_step + 1 << endl;
+    cout << c_step << endl;
     for(int i = 0; i < m; ++i) {
        visitfile << endl;
        for(int j = 0; j < n; ++j) {
@@ -167,7 +168,7 @@ int main() {
     #endif // debug
     outstep.open("final.path");
     tmpfile.open("tmp.path");
-    outstep << c_step + 1 << endl;
+    outstep << c_step << endl;
     int cc;
     while(tmpfile >> cc) {
         outstep << cc << " ";
