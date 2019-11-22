@@ -7,7 +7,7 @@ int burtal(int pow_max, int str, int stc) {
     int dir, pri = up;
     my_queue<int> rrow, rcol;
 
-    while(pow_use < pow_max / 2) {
+    while(dis_to[r_id][c_id] < pow_max - pow_use) {
         #ifdef debug
             cout << r_id << " " << c_id << endl;
         #endif // debug
