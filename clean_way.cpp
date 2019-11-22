@@ -2,19 +2,19 @@
 
 int clean_fs(int max_pow, int str, int stc) {
      int clean;
-     //ofstream cc, vv;
+    //ofstream cc, vv;
      //cc.open("each_clean.data");
-     //vv.open("each_v.txt");
+     //vv.open("each_v.data");
      while(dirty > 0) {
         #ifdef debug
             cout << "cleaning " << endl;
         #endif
         clean = burtal(max_pow, str, stc);
+        //cc << clean << endl;
         if(clean == 0)
             break;
         dirty -= clean;
-        /* cc << clean << endl;
-        for(int i = 0; i < 100; ++i) {
+       /* for(int i = 0; i < 100; ++i) {
             for(int j = 0; j < 500; ++j) {
                 vv << visit[i][j];
             }

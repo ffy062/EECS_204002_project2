@@ -48,6 +48,7 @@ int burtal(int pow_max, int str, int stc) {
             dir = find_dir_nv(r_id, c_id, -1, pri);
             if(dir == unknown) {
                 dir = find_dir_v(r_id, c_id, 1, pri);
+                //dir = find_dir_d(r_id, c_id, dir, (pow_max/5 - pow_use) - 2);
                 if(dir == unknown) {
                     dir = find_dir_v(r_id, c_id, -1, pri);
                     rrow.push(r_id);
@@ -262,7 +263,6 @@ int burtal_r(int str, int stc, int idx_r, int idx_c, int pow_max) {
             r_id = r_id + 1;
             c_id = c_id;
             pri = up;
-
         }
         else if(dir == down) {
             r_id = r_id - 1;
@@ -426,5 +426,186 @@ int find_dir_v(int r_id, int c_id, int d, int pri) {
     }
     return dir;
 }
+
+
+
+int find_dir_r(int r_id, int c_id, int pri) {
+    int search, dir, max_pt[4], cur_max;
+     int tmp[4][2] = {{1, 0}, {-1, 0}, {0, -1}, {0, 1}};
+    search = dis_to[r_id][c_id] / 3 + 1;
+    cur_max = -1;
+
+   for(int i = 0; i < 4; ++i) {
+        int idx = (i + pri - 1) % 4;
+        if(dis_to[r_id + tmp[idx][0]][c_id + tmp[idx][1]] == dis_to[r_id][c_id] - 1) {
+            if(dis_to[r_id + tmp[idx][0]][c_id + tmp[idx][1]] == 0) {
+                dir = idx + 1;
+                break;
+            }
+            max_pt[idx] = BFS_lim(dis_to[r_id][c_id] / 15 + 2, r_id + tmp[idx][0], c_id + tmp[idx][1], 1);
+            if(max_pt[idx] > cur_max) {
+                dir = idx + 1;
+                cur_max = max_pt[idx];
+            }
+        }
+    }
+    return dir;
+}
+
+int find_dir_d(int r_id, int c_id, int pri, int dis) {
+    int dir = unknown, max_pt[4], cur_max;
+    int tmp[4][2] = {{1, 0}, {-1, 0}, {0, -1}, {0, 1}};
+    cur_max = 0;
+
+   for(int i = 0; i < 4; ++i) {
+        int idx = i;
+        if(dis_to[r_id + tmp[idx][0]][c_id + tmp[idx][1]] == dis_to[r_id][c_id] + 1) {
+            max_pt[idx] = BFS_unlim(dis, r_id + tmp[idx][0], c_id + tmp[idx][1]);
+            if(max_pt[idx] > cur_max) {
+                dir = idx + 1;
+                cur_max = max_pt[idx];
+            }
+        }
+    }
+
+    return dir;
+}
+
+
+
+int BFS_lim(int dis, int r_id, int c_id, int d) {
+    // pair to store the point's row and column
+    pair<int, int> pt, st;
+    int col, row, cnt;
+    // queue to store point
+    my_queue<pair<int, int>> next_pt;
+    //initialize
+    for(int i = 0; i < m + 2; ++i) {
+        memset(isv[i], '0', n + 2);
+    }
+    
+    pt.first = r_id;
+    pt.second = c_id;
+    cnt = 0;
+
+    // start BFS
+    next_pt.push(pt);
+    #ifdef debug
+        cout << "starting point: " << pt.first << " " << pt.second << endl;
+    #endif
+    //cout << dis << endl;
+    while(!next_pt.check_empty()) {
+        pt = next_pt.front_data();
+        next_pt.pop();
+        row = pt.first;
+        col = pt.second;
+        if(isv[row][col] == '1') {
+            continue;
+        }
+        isv[row][col] = '1';
+        #ifdef debug
+            cout << "now traversing " << row << " " << col << endl; 
+        #endif
+        if(dis_to[row][col] - dis_to[row][col + 1] == d && (dis_to[r_id][c_id] - dis_to[row][col + 1])*d < dis) {
+            pt.second += 1;
+            next_pt.push(pt);
+            if(visit[row][col + 1] == '1') {
+                cnt++;
+            }
+            pt.second -= 1;
+        }
+        if(dis_to[row][col] - dis_to[row][col - 1] == d && (dis_to[r_id][c_id] - dis_to[row][col - 1])*d < dis) {
+            pt.second -= 1;
+            next_pt.push(pt);
+            if(visit[row][col - 1] == '1') {
+                cnt++;
+            }
+            pt.second += 1;
+        }
+        if(dis_to[row][col] - dis_to[row + 1][col] == d && (dis_to[r_id][c_id] - dis_to[row + 1][col])*d < dis) {
+            pt.first += 1;
+            next_pt.push(pt);
+            if(visit[row + 1][col] == '1') {
+                cnt++;
+            }
+            pt.first -= 1;
+        }
+        if(dis_to[row][col] - dis_to[row - 1][col] == d && (dis_to[r_id][c_id] - dis_to[row - 1][col])*d < dis) {
+            pt.first -= 1;
+            next_pt.push(pt);
+            if(visit[row - 1][col] == '1') {
+                cnt++;
+            }
+        }
+    }
+
+    return cnt;
+}
+
+
+int BFS_unlim(int dis, int r_id, int c_id) {
+    // pair to store the point's row and column
+    pair<int, int> pt, st;
+    int col, row, cnt;
+    // queue to store point
+    my_queue<pair<int, int>> next_pt;
+    //initialize
+    for(int i = 0; i < m + 2; ++i) {
+        memset(isv[i], '0', n + 2);
+    }
+
+    pt.first = r_id;
+    pt.second = c_id;
+    cnt = 0;
+
+    // start BFS
+    next_pt.push(pt);
+    #ifdef debug
+        cout << "starting point: " << pt.first << " " << pt.second << endl;
+    #endif
+    //cout << dis << endl;
+    int i = 0;
+
+    while(!next_pt.check_empty()) {
+        i++;
+        pt = next_pt.front_data();
+        next_pt.pop();
+        row = pt.first;
+        col = pt.second;
+        if(isv[row][col] == '1') {
+            continue;
+        }
+        if(visit[row][col] == '1') {
+            cnt++;
+        }
+        isv[row][col] = '1';
+        #ifdef debug
+                cout << "now traversing " << row << " " << col << endl;
+        #endif
+        if(col + 1 < n && Map[row][col + 1] != '9' && abs(dis_to[r_id][c_id] - dis_to[row][col + 1]) < dis) {
+            pt.second += 1;
+            next_pt.push(pt);
+            pt.second -= 1;
+        }
+        if(col - 1 > -1 && Map[row][col - 1] != '9' && abs(dis_to[r_id][c_id] - dis_to[row][col - 1]) < dis) {
+            pt.second -= 1;
+            next_pt.push(pt);
+            pt.second += 1;
+        }
+        if(row + 1 < m && Map[row + 1][col] != '9' && abs(dis_to[r_id][c_id] - dis_to[row + 1][col]) < dis) {
+            pt.first += 1;
+            next_pt.push(pt);
+            pt.first -= 1;
+        }
+        if(row - 1 > -1 && Map[row - 1][col] != '9' && abs(dis_to[r_id][c_id] - dis_to[row - 1][col]) < dis) {
+            pt.first -= 1;
+            next_pt.push(pt);
+            pt.first += 1;
+        }
+    }
+
+    return cnt;
+}
+
 
 
